@@ -30,17 +30,17 @@ typedef struct
 
 } Disciplina;
 
+Pessoa alunos[TAM_ALUNOS];
+Pessoa professores[TAM_PROFESSORES];
+Disciplina disciplinas[TAM_DISCIPLINAS];
+
 void apagarCadastro() {}
 
 void atualizarCadastro() {}
 
 void cadastroPessoas()
 {
-    Pessoa alunos[TAM_ALUNOS];
-    Pessoa professores[TAM_PROFESSORES];
-
     int i, j;
-    char continuar;
     int length = sizeof(alunos) / sizeof(alunos[0]);
 
     for (i = 0; i < TAM_ALUNOS; i++)
@@ -96,7 +96,6 @@ void cadastroPessoas()
 
 void cadastroDisciplina()
 {
-    Disciplina disciplinas[TAM_DISCIPLINAS];
     int i;
 
     for (i = 0; i < TAM_DISCIPLINAS; i++)
@@ -145,5 +144,5 @@ void main()
 
     // cadastroPessoas();
 
-    cadastroDisciplina();
+    Disciplina disciplinas = cadastroDisciplina();
 }
