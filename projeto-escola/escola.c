@@ -15,7 +15,7 @@ typedef struct
 {
     char nome[31];
     char matricula[15];
-    char cpf[14];
+    char cpf[15];
     char sexo;
     Data dataNascimento;
 } Pessoa;
@@ -53,14 +53,14 @@ void cadastroPessoas()
         fflush(stdin);
 
         printf("Digite o CPF: ");
-        fgets(alunos[i].cpf, 14, stdin);
+        fgets(alunos[i].cpf, 15, stdin);
         ln = strlen(alunos[i].cpf) - 1;
         if (alunos[i].cpf[ln] == '\n')
             alunos[i].cpf[ln] = '\0';
-        fflush(stdin);
+        getchar();
 
         printf("Matrícula do aluno: ");
-        fgets(alunos[i].matricula, 14, stdin);
+        fgets(alunos[i].matricula, 15, stdin);
         ln = strlen(alunos[i].matricula) - 1;
         if (alunos[i].matricula[ln] == '\n')
             alunos[i].matricula[ln] = '\0';
@@ -68,7 +68,7 @@ void cadastroPessoas()
 
         printf("Digite o sexo: ");
         scanf("%c", &alunos[i].sexo);
-        fflush(stdin);
+        getchar();
 
         printf("Data de nascimento\n");
 
@@ -84,11 +84,7 @@ void cadastroPessoas()
         scanf("%d", &alunos[i].dataNascimento.ano);
         fflush(stdin);
 
-        puts(alunos[i].nome);
-        puts(alunos[i].matricula);
-        puts(alunos[i].cpf);
-        printf("%c \n", alunos[i].sexo);
-        printf("%02d / %02d / %d", alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano);
+        
         // printf("Deseja cadastrar outro aluno(a)?\n");
         // scanf("%c", &continuar);
     }
@@ -133,6 +129,7 @@ void cadastroDisciplina()
 
 void main()
 {
+  int i;
     // Pessoa alunos[TAM_ALUNOS], professores[TAM_PROFESSORES];
     // int option;
 
@@ -142,7 +139,13 @@ void main()
     // scanf("%d", &option);
     // getchar();
 
-    // cadastroPessoas();
+  cadastroPessoas();
 
-    Disciplina disciplinas = cadastroDisciplina();
+  for(i=0; i < TAM_ALUNOS; i++){
+    puts(alunos[i].nome);
+    puts(alunos[i].cpf);
+    puts(alunos[i].matricula);
+    printf("%c \n", alunos[i].sexo);
+    printf("%02d / %02d / %d", alunos[i].dataNascimento.dia,     alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano);
+  }
 }
