@@ -42,7 +42,9 @@ void cadastroPessoas()
 {
     int i, j;
     int length = sizeof(alunos) / sizeof(alunos[0]);
+    
 
+  
     for (i = 0; i < TAM_ALUNOS; i++)
     {
         printf("Nome do aluno: ");
