@@ -43,7 +43,7 @@ int detectarPalavra(char texto[], char palavra[])
     }
 }
 
-void main()
+void mainTexto()
 {
     char texto[TAM_TEXTO], palavra[TAM_TEXTO];
     char letra;
