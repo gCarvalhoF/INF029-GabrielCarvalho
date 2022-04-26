@@ -23,4 +23,6 @@ int detectarPalavras(char texto[], char palavra[], int posicoes[]);
 
 // Numeros - q5 e q6
 int inverterNumero(int numero);
+int splitValor(int valor, int valorArr[]);
+int contarValor(int numeroBusca, int valor);
 #endif

@@ -295,10 +295,44 @@ int inverterNumero(int numero)
   return inverso;
 }
 
-void splitValor(int valor, int valorArr[])
+int splitValor(int valor, int valorArr[])
 {
+  int i;
+  
+  for(i=0; valor % 10 != 0; i++){
+    valorArr[i] = valor % 10;
+  }
+
+  return i;
 }
 
-void contarValor(int numero, int valor)
-{
+int contarValor(int valor, int numeroBusca)
+{  
+  int valorArr[10], buscaArr[4];
+  int qtdNumerosValor, qtdNumerosBusca;
+  int ocorrencias = 0;
+  int i, j;
+  
+  qtdNumerosValor = splitValor(valor, valorArr);
+  qtdNumerosBusca = splitValor(numeroBusca, buscaArr);
+
+  printf("%d - %d", qtdNumerosValor, qtdNumerosBusca);
+
+  for (i = qtdNumerosValor; i != 0; i--)
+  {    
+      if(valorArr[i] != buscaArr[j]){
+        break;
+      }
+      else{
+        j--;
+      }
+
+      if (j == 0)
+      {
+        ocorrencias++;
+        j == qtdNumerosBusca;
+      }
+  }
+
+  return ocorrencias;
 }
