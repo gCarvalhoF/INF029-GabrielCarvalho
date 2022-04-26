@@ -17,8 +17,10 @@ int main()
     // testQ2(); // 35 testes
     // printf("q3\n");
     // testQ3();
-    printf("q5\n");
-    testQ5();
+    printf("q4\n");
+    testQ4();
+    // printf("q5\n");
+    // testQ5();
 }
 
 void testQ1()
@@ -218,6 +220,67 @@ void testQ3()
     printf("%d\n", qtdLetras(str, 'e', 0) == 3);
     printf("%d\n", qtdLetras(str, 'E', 1) == 2);
     printf("%d\n", qtdLetras(str, 'S', 1) == 0);
+}
+
+void testQ4()
+{
+    char strTexto[250];
+    char strBusca[50];
+    int posicoes[30];
+    int i;
+    for (i = 0; i < 30; i++)
+    {
+        posicoes[i] = -1;
+    }
+    strcpy(strTexto, "Laboratorio de programacao: para ratos de programação");
+    strcpy(strBusca, "rato");
+    printf("%d\n", detectarPalavras(strTexto, strBusca, posicoes) == 2);
+    printf("%d\n", posicoes[0] == 5);
+    printf("%d\n", posicoes[1] == 8);
+    printf("%d\n", posicoes[2] == 34);
+    printf("%d\n", posicoes[3] == 37);
+    printf("------------------------\n");
+
+    for (i = 0; i < 30; i++)
+    {
+        posicoes[i] = -1;
+    }
+    strcpy(strTexto, "Ola, o mundo e muito grande. Tem muitas pessoas, e muitos problemas");
+    strcpy(strBusca, "mui");
+    printf("%d\n", detectarPalavras(strTexto, strBusca, posicoes) == 3);
+    printf("%d\n", posicoes[0] == 16);
+    printf("%d\n", posicoes[1] == 18);
+    printf("%d\n", posicoes[2] == 34);
+    printf("%d\n", posicoes[3] == 36);
+    printf("%d\n", posicoes[4] == 52);
+    printf("%d\n", posicoes[5] == 54);
+    printf("------------------------\n");
+
+    for (i = 0; i < 30; i++)
+    {
+        posicoes[i] = -1;
+    }
+    strcpy(strTexto, "Programar é legal?");
+    strcpy(strBusca, "sim");
+    printf("%d\n", detectarPalavras(strTexto, strBusca, posicoes) == 0);
+    printf("------------------------\n");
+
+    for (i = 0; i < 30; i++)
+    {
+        posicoes[i] = -1;
+    }
+    strcpy(strTexto, "maraaaavilha, meu prograaaama funcionou");
+    strcpy(strBusca, "aa");
+    printf("%d\n", detectarPalavras(strTexto, strBusca, posicoes) == 4);
+    printf("%d\n", posicoes[0] == 4);
+    printf("%d\n", posicoes[1] == 5);
+    printf("%d\n", posicoes[2] == 6);
+    printf("%d\n", posicoes[3] == 7);
+    printf("%d\n", posicoes[4] == 24);
+    printf("%d\n", posicoes[5] == 25);
+    printf("%d\n", posicoes[6] == 26);
+    printf("%d\n", posicoes[7] == 27);
+    printf("------------------------\n");
 }
 
 void testQ5()

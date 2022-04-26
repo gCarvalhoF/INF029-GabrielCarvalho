@@ -227,29 +227,42 @@ int qtdLetras(char texto[], char letra, int isCaseSensitive)
   return qtd_letras;
 }
 
-int detectarPalavra(char texto[], char palavra[])
+int detectarPalavras(char texto[], char palavra[], int posicoes[])
 {
-  int tam_palavra = strlen(palavra) - 1;
-  int tam_text = strlen(texto) - 1;
+  int tam_palavra = strlen(palavra);
+  int tam_text = strlen(texto);
   int i, j, k;
+  int ocorrencias = 0, acentos = 0;
+  int pIn, pFin;
 
-  for (i = 0; i <= tam_text; i++)
+  for (i = 0; i < tam_text; i++)
   {
-    for (j = 0; j <= tam_palavra; j++)
+
+    if (texto[i] < 0 && texto[i + 1] < 0)
     {
-      if (texto[i] != palavra[j])
-        break;
-
-      if (texto[i] == palavra[j] && texto[i + tam_palavra] == palavra[j + tam_palavra])
-        for (k = 0; k <= tam_palavra; k++)
-        {
-          if (texto[k] != palavra[k])
-            break;
-        }
-
-      printf("A palavra '%s' aparece no texto nas posicoes: \nPosicao inicial: %d \nPosicao final: %d", palavra, i + 1, i + tam_palavra);
+      acentos++;
     }
+    if (texto[i] == palavra[j])
+    {
+      j++;
+
+      if (j == tam_palavra)
+      {
+        pIn = ocorrencias * 2;
+        pFin = ocorrencias * 2 + 1;
+
+        posicoes[pIn] = i - j + 2;
+        posicoes[pFin] = i + 1 - acentos;
+
+        ocorrencias++;
+        j = 0;
+      }
+    }
+    else
+      j = 0;
   }
+
+  return ocorrencias;
 }
 
 // Numeros - q5 e q6

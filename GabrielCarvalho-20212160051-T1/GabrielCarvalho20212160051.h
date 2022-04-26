@@ -19,7 +19,7 @@ int calcDistDatas(Data datas[], int *qtdDias, int *qtdMeses, int *qtdAnos);
 
 // Texto - q3 e q4
 int qtdLetras(char texto[], char letra, int isCaseSensitive);
-int detectarPalavra(char texto[], char palavra[]);
+int detectarPalavras(char texto[], char palavra[], int posicoes[]);
 
 // Numeros - q5 e q6
 int inverterNumero(int numero);
