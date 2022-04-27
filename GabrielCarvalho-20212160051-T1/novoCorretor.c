@@ -299,15 +299,16 @@ void testQ5()
     printf("%d\n", inverterNumero(1234) == 4321);
 }
 
-void testQ6(){
+void testQ6()
+{
     printf("%d\n", contarValor(34567368, 3) == 2);
     printf("%d\n", contarValor(34567368, 4576) == 0);
     printf("%d\n", contarValor(3539343, 3) == 4);
     printf("%d\n", contarValor(3539343, 39) == 1);
     printf("%d\n", contarValor(5444, 44) == 1);
     printf("%d\n", contarValor(54444, 44) == 2);
-    printf("%d\n", contarValor(1234562354, 23) == 2);
+    printf("%d\n", contarValor(123456235, 23) == 2);
     printf("%d\n", contarValor(1234, 13) == 0);
     printf("%d\n", contarValor(544444, 4) == 5);
-    printf("%d\n", contarValor(1234562354, 32) == 0);
+    printf("%d\n", contarValor(123456235, 32) == 0);
 }

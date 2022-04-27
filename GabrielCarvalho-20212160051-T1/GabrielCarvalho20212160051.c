@@ -295,44 +295,41 @@ int inverterNumero(int numero)
   return inverso;
 }
 
-int splitValor(int valor, int valorArr[])
+int acharUnidade(int valor)
 {
-  int i;
-  
-  for(i=0; valor % 10 != 0; i++){
-    valorArr[i] = valor % 10;
-  }
+  int unidade = 1;
 
-  return i;
+  while (unidade <= valor)
+    unidade *= 10;
+  unidade = unidade / 10;
+
+  return unidade;
 }
 
 int contarValor(int valor, int numeroBusca)
-{  
-  int valorArr[10], buscaArr[4];
-  int qtdNumerosValor, qtdNumerosBusca;
+{
+  int unidadesValor = 1, unidadesNumeroBusca = 1;
   int ocorrencias = 0;
+  int resto = -1;
   int i, j;
-  
-  qtdNumerosValor = splitValor(valor, valorArr);
-  qtdNumerosBusca = splitValor(numeroBusca, buscaArr);
 
-  printf("%d - %d", qtdNumerosValor, qtdNumerosBusca);
+  unidadesValor = acharUnidade(valor);
+  unidadesNumeroBusca = acharUnidade(numeroBusca);
 
-  for (i = qtdNumerosValor; i != 0; i--)
-  {    
-      if(valorArr[i] != buscaArr[j]){
-        break;
-      }
-      else{
-        j--;
-      }
-
-      if (j == 0)
-      {
-        ocorrencias++;
-        j == qtdNumerosBusca;
-      }
+  while (unidadesValor >= unidadesNumeroBusca)
+  {
+    resto = (valor / (unidadesValor / unidadesNumeroBusca));
+    if (resto == numeroBusca)
+    {
+      ocorrencias++;
+      unidadesValor /= unidadesNumeroBusca;
+      valor %= unidadesValor;
+    }
+    else
+    {
+      valor %= unidadesValor;
+      unidadesValor /= 10;
+    }
   }
-
   return ocorrencias;
 }
