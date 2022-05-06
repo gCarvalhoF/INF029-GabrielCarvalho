@@ -11,8 +11,8 @@ void testQ6();
 
 int main()
 {
-    // printf("q1\n");
-    // testQ1(); // 10 testes
+    printf("q1\n");
+    testQ1(); // 10 testes
     // printf("q2\n");
     // testQ2(); // 35 testes
     // printf("q3\n");
@@ -21,8 +21,8 @@ int main()
     // testQ4();
     // printf("q5\n");
     // testQ5();
-    printf("q6\n");
-    testQ6();
+    // printf("q6\n");
+    // testQ6();
 }
 
 void testQ1()
