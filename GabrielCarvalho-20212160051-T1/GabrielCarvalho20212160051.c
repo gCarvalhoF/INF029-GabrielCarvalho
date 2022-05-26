@@ -36,54 +36,53 @@ int convStrInt(char charValue)
   return intValue;
 }
 
-int getValidDMA(Data datas[], int qtd_datas)
+int getValidDMA(char data[])
 {
   int i, j, barraCount;
 
-  for (i = 0; i < qtd_datas; i++)
+
+  data.ano = 0;
+  datas[i].mes = 0;
+  datas[i].dia = 0;
+  datas[i].bissexto = 0;
+
+  barraCount = 0;
+  for (j = 0; j < 11; j++)
   {
-    datas[i].ano = 0;
-    datas[i].mes = 0;
-    datas[i].dia = 0;
-    datas[i].bissexto = 0;
-
-    barraCount = 0;
-    for (j = 0; j < 11; j++)
+    if (datas[i].dataStr[j] == '/')
     {
-      if (datas[i].dataStr[j] == '/')
-      {
-        barraCount++;
-        continue;
-      }
+      barraCount++;
+      continue;
+    }
 
-      if (barraCount == 0 && datas[i].dataStr[j] != '/' && datas[i].dataStr[j + 1] != '/')
-      {
-        datas[i].dia = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
-      }
-      else if (datas[i].dia == 0)
-      {
-        datas[i].dia = convStrInt(datas[i].dataStr[j]);
-      }
+    if (barraCount == 0 && datas[i].dataStr[j] != '/' && datas[i].dataStr[j + 1] != '/')
+    {
+      datas[i].dia = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
+    }
+    else if (datas[i].dia == 0)
+    {
+      datas[i].dia = convStrInt(datas[i].dataStr[j]);
+    }
 
-      if (barraCount == 1 && datas[i].dataStr[j] != '/' && datas[i].dataStr[j + 1] != '/')
-      {
-        datas[i].mes = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
-      }
-      else if (barraCount == 1 && datas[i].mes == 0)
-      {
-        datas[i].mes = convStrInt(datas[i].dataStr[j]);
-      }
+    if (barraCount == 1 && datas[i].dataStr[j] != '/' && datas[i].dataStr[j + 1] != '/')
+    {
+      datas[i].mes = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
+    }
+    else if (barraCount == 1 && datas[i].mes == 0)
+    {
+      datas[i].mes = convStrInt(datas[i].dataStr[j]);
+    }
 
-      if (barraCount == 2 && datas[i].dataStr[j] != '/' && datas[i].ano == 0 && datas[i].dataStr[j + 2] != '\n')
-      {
-        datas[i].ano = convStrInt(datas[i].dataStr[j]) * 1000 + convStrInt(datas[i].dataStr[j + 1]) * 100 + convStrInt(datas[i].dataStr[j + 2]) * 10 + convStrInt(datas[i].dataStr[j + 3]);
-      }
-      else if (barraCount == 2 && datas[i].ano == 0 && datas[i].dataStr[j + 2] == '\n')
-      {
-        datas[i].ano = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
-      }
+    if (barraCount == 2 && datas[i].dataStr[j] != '/' && datas[i].ano == 0 && datas[i].dataStr[j + 2] != '\n')
+    {
+      datas[i].ano = convStrInt(datas[i].dataStr[j]) * 1000 + convStrInt(datas[i].dataStr[j + 1]) * 100 + convStrInt(datas[i].dataStr[j + 2]) * 10 + convStrInt(datas[i].dataStr[j + 3]);
+    }
+    else if (barraCount == 2 && datas[i].ano == 0 && datas[i].dataStr[j + 2] == '\n')
+    {
+      datas[i].ano = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
     }
   }
+
   return 1;
 }
 
@@ -104,73 +103,72 @@ int qtdDiasMes(int mes, int bissexto)
     return 30;
 }
 
-int validarDatas(Data datas[], int qtd_datas)
+int q1(char data[])
 {
   int valido = 0;
 
-  if (getValidDMA(datas, qtd_datas) < 0)
+  if (getValidDMA(datas) < 0)
   {
     valido = 0;
     return valido;
   }
 
-  for (int i = 0; i < qtd_datas; i++)
+  
+  if (datas[i].ano < 100 && datas[i].ano > ANO_ATUAL)
   {
-    if (datas[i].ano < 100 && datas[i].ano > ANO_ATUAL)
-    {
-      datas[i].ano += 2000;
-    }
+    datas[i].ano += 2000;
+  }
 
-    if (datas[i].ano % 400 == 0)
-    {
-      datas[i].bissexto = 1;
-    }
-    else if (datas[i].ano % 4 == 0 && datas[i].ano % 100 != 0)
-    {
-      datas[i].bissexto = 1;
-    }
+  if (datas[i].ano % 400 == 0)
+  {
+    datas[i].bissexto = 1;
+  }
+  else if (datas[i].ano % 4 == 0 && datas[i].ano % 100 != 0)
+  {
+    datas[i].bissexto = 1;
+  }
 
-    if (datas[i].bissexto == 1 && datas[i].mes == 2 && datas[i].dia <= 29)
-      valido = 1;
-    else if (datas[i].bissexto == 0 && datas[i].mes == 2 && datas[i].dia < 28)
-    {
-      valido = 1;
-    }
-    else if (datas[i].bissexto == 0 && datas[i].mes == 2 && datas[i].dia > 28)
-    {
-      valido = 0;
-      return valido;
-    }
-
-    if (datas[i].mes == 1 || datas[i].mes == 3 || datas[i].mes == 5 || datas[i].mes == 7 || datas[i].mes == 8 || datas[i].mes == 10 || datas[i].mes == 12)
-      if (datas[i].dia > 0 && datas[i].dia <= 31)
-        valido = 1;
-    if (datas[i].mes == 4 || datas[i].mes == 6 || datas[i].mes == 9 || datas[i].mes == 11)
-      if (0 < datas[i].dia && datas[i].dia <= 30)
-        valido = 1;
-    if (datas[i].dia < 0 || datas[i].dia > 31 || datas[i].mes > 12 || datas[i].mes < 0)
-    {
-      valido = 0;
-      return valido;
-    }
-
+  if (datas[i].bissexto == 1 && datas[i].mes == 2 && datas[i].dia <= 29)
+    valido = 1;
+  else if (datas[i].bissexto == 0 && datas[i].mes == 2 && datas[i].dia < 28)
+  {
+    valido = 1;
+  }
+  else if (datas[i].bissexto == 0 && datas[i].mes == 2 && datas[i].dia > 28)
+  {
+    valido = 0;
     return valido;
   }
+
+  if (datas[i].mes == 1 || datas[i].mes == 3 || datas[i].mes == 5 || datas[i].mes == 7 || datas[i].mes == 8 || datas[i].mes == 10 || datas[i].mes == 12)
+    if (datas[i].dia > 0 && datas[i].dia <= 31)
+      valido = 1;
+  if (datas[i].mes == 4 || datas[i].mes == 6 || datas[i].mes == 9 || datas[i].mes == 11)
+    if (0 < datas[i].dia && datas[i].dia <= 30)
+      valido = 1;
+  if (datas[i].dia < 0 || datas[i].dia > 31 || datas[i].mes > 12 || datas[i].mes < 0)
+  {
+    valido = 0;
+    return valido;
+  }
+
+  return valido;
+  
 }
 
-int calcDistDatas(Data datas[], int *qtdDias, int *qtdMeses, int *qtdAnos)
+int q2(Data datas[], int *qtdDias, int *qtdMeses, int *qtdAnos)
 {
   int i;
-  validarDatas(datas, 2);
+  q1(datas, 2);
 
   Data dataUnica[1];
   for (i = 0; i < 2; i++)
   {
     strcpy(dataUnica[0].dataStr, datas[i].dataStr);
 
-    if (i == 0 && validarDatas(dataUnica, 1) == 0)
+    if (i == 0 && q1(dataUnica, 1) == 0)
       return 2;
-    else if (i == 1 && validarDatas(dataUnica, 1) == 0)
+    else if (i == 1 && q1(dataUnica, 1) == 0)
       return 3;
   }
 
@@ -198,7 +196,7 @@ int calcDistDatas(Data datas[], int *qtdDias, int *qtdMeses, int *qtdAnos)
 // Textos - q3 e q4
 #define TAM_TEXTO 250
 
-int qtdLetras(char texto[], char letra, int isCaseSensitive)
+int q3(char texto[], char letra, int isCaseSensitive)
 {
   int i;
   int qtd_letras = 0;
@@ -227,7 +225,7 @@ int qtdLetras(char texto[], char letra, int isCaseSensitive)
   return qtd_letras;
 }
 
-int detectarPalavras(char texto[], char palavra[], int posicoes[])
+int q4(char texto[], char palavra[], int posicoes[])
 {
   int tam_palavra = strlen(palavra);
   int tam_text = strlen(texto);
@@ -267,7 +265,7 @@ int detectarPalavras(char texto[], char palavra[], int posicoes[])
 
 // Numeros - q5 e q6
 
-int inverterNumero(int numero)
+int q5(int numero)
 {
   int inverso;
   int mNum, cNum, dNum, uNum;
@@ -306,7 +304,7 @@ int acharUnidade(int valor)
   return unidade;
 }
 
-int contarValor(int valor, int numeroBusca)
+int q6(int valor, int numeroBusca)
 {
   int unidadesValor = 1, unidadesNumeroBusca = 1;
   int ocorrencias = 0;

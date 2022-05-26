@@ -12,17 +12,17 @@ typedef struct
 } Data;
 
 int convStrInt(char charValue);
-int getValidDMA(Data datas[], int qtd_datas);
+int getValidDMA(Data datas[]);
 int qtdDiasMes(int mes, int bissexto);
-int validarDatas(Data datas[], int qtd_datas);
-int calcDistDatas(Data datas[], int *qtdDias, int *qtdMeses, int *qtdAnos);
+int q1(char data[]);
+Data q2(char data[]);
 
 // Texto - q3 e q4
-int qtdLetras(char texto[], char letra, int isCaseSensitive);
-int detectarPalavras(char texto[], char palavra[], int posicoes[]);
+int q3(char texto[], char letra, int isCaseSensitive);
+int q4(char texto[], char palavra[], int posicoes[]);
 
 // Numeros - q5 e q6
-int inverterNumero(int numero);
+int q5(int numero);
 int acharUnidade(int valor);
-int contarValor(int numeroBusca, int valor);
+int q6(int numeroBusca, int valor);
 #endif
