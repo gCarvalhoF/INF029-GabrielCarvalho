@@ -36,54 +36,55 @@ int convStrInt(char charValue)
   return intValue;
 }
 
-int getValidDMA(char data[])
+Data getValidDMA(char dataStr[])
 {
   int i, j, barraCount;
-
+  Data data;
 
   data.ano = 0;
-  datas[i].mes = 0;
-  datas[i].dia = 0;
-  datas[i].bissexto = 0;
+  data.mes = 0;
+  data.dia = 0;
+  data.bissexto = 0;
 
   barraCount = 0;
   for (j = 0; j < 11; j++)
   {
-    if (datas[i].dataStr[j] == '/')
+    if (data.dataStr[j] == '/')
     {
       barraCount++;
       continue;
     }
 
-    if (barraCount == 0 && datas[i].dataStr[j] != '/' && datas[i].dataStr[j + 1] != '/')
+    if (barraCount == 0 && data.dataStr[j] != '/' && data.dataStr[j + 1] != '/')
     {
-      datas[i].dia = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
+      data.dia = convStrInt(data.dataStr[j]) * 10 + convStrInt(data.dataStr[j + 1]);
     }
-    else if (datas[i].dia == 0)
+    else if (data.dia == 0)
     {
-      datas[i].dia = convStrInt(datas[i].dataStr[j]);
-    }
-
-    if (barraCount == 1 && datas[i].dataStr[j] != '/' && datas[i].dataStr[j + 1] != '/')
-    {
-      datas[i].mes = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
-    }
-    else if (barraCount == 1 && datas[i].mes == 0)
-    {
-      datas[i].mes = convStrInt(datas[i].dataStr[j]);
+      data.dia = convStrInt(data.dataStr[j]);
     }
 
-    if (barraCount == 2 && datas[i].dataStr[j] != '/' && datas[i].ano == 0 && datas[i].dataStr[j + 2] != '\n')
+    if (barraCount == 1 && data.dataStr[j] != '/' && data.dataStr[j + 1] != '/')
     {
-      datas[i].ano = convStrInt(datas[i].dataStr[j]) * 1000 + convStrInt(datas[i].dataStr[j + 1]) * 100 + convStrInt(datas[i].dataStr[j + 2]) * 10 + convStrInt(datas[i].dataStr[j + 3]);
+      data.mes = convStrInt(data.dataStr[j]) * 10 + convStrInt(data.dataStr[j + 1]);
     }
-    else if (barraCount == 2 && datas[i].ano == 0 && datas[i].dataStr[j + 2] == '\n')
+    else if (barraCount == 1 && data.mes == 0)
     {
-      datas[i].ano = convStrInt(datas[i].dataStr[j]) * 10 + convStrInt(datas[i].dataStr[j + 1]);
+      data.mes = convStrInt(data.dataStr[j]);
+    }
+
+    if (barraCount == 2 && data.dataStr[j] != '/' && data.ano == 0 && data.dataStr[j + 2] != '\n')
+    {
+      data.ano = convStrInt(data.dataStr[j]) * 1000 + convStrInt(data.dataStr[j + 1]) * 100 + convStrInt(data.dataStr[j + 2]) * 10 + convStrInt(data.dataStr[j + 3]);
+    }
+    else if (barraCount == 2 && data.ano == 0 && data.dataStr[j + 2] == '\n')
+    {
+      data.ano = convStrInt(data.dataStr[j]) * 10 + convStrInt(data.dataStr[j + 1]);
     }
   }
 
-  return 1;
+  data.valido = 1;
+  return data;
 }
 
 int qtdDiasMes(int mes, int bissexto)
@@ -103,94 +104,90 @@ int qtdDiasMes(int mes, int bissexto)
     return 30;
 }
 
-int q1(char data[])
+int q1(char dataStr[])
 {
   int valido = 0;
+  Data data = getValidDMA(dataStr);
 
-  if (getValidDMA(datas) < 0)
+  if (data.valido < 0)
   {
     valido = 0;
     return valido;
   }
 
-  
-  if (datas[i].ano < 100 && datas[i].ano > ANO_ATUAL)
+  if (data.ano < 100 && data.ano > ANO_ATUAL)
   {
-    datas[i].ano += 2000;
+    data.ano += 2000;
   }
 
-  if (datas[i].ano % 400 == 0)
+  if (data.ano % 400 == 0)
   {
-    datas[i].bissexto = 1;
+    data.bissexto = 1;
   }
-  else if (datas[i].ano % 4 == 0 && datas[i].ano % 100 != 0)
+  else if (data.ano % 4 == 0 && data.ano % 100 != 0)
   {
-    datas[i].bissexto = 1;
+    data.bissexto = 1;
   }
 
-  if (datas[i].bissexto == 1 && datas[i].mes == 2 && datas[i].dia <= 29)
+  if (data.bissexto == 1 && data.mes == 2 && data.dia <= 29)
     valido = 1;
-  else if (datas[i].bissexto == 0 && datas[i].mes == 2 && datas[i].dia < 28)
+  else if (data.bissexto == 0 && data.mes == 2 && data.dia < 28)
   {
     valido = 1;
   }
-  else if (datas[i].bissexto == 0 && datas[i].mes == 2 && datas[i].dia > 28)
+  else if (data.bissexto == 0 && data.mes == 2 && data.dia > 28)
   {
     valido = 0;
     return valido;
   }
 
-  if (datas[i].mes == 1 || datas[i].mes == 3 || datas[i].mes == 5 || datas[i].mes == 7 || datas[i].mes == 8 || datas[i].mes == 10 || datas[i].mes == 12)
-    if (datas[i].dia > 0 && datas[i].dia <= 31)
+  if (data.mes == 1 || data.mes == 3 || data.mes == 5 || data.mes == 7 || data.mes == 8 || data.mes == 10 || data.mes == 12)
+    if (data.dia > 0 && data.dia <= 31)
       valido = 1;
-  if (datas[i].mes == 4 || datas[i].mes == 6 || datas[i].mes == 9 || datas[i].mes == 11)
-    if (0 < datas[i].dia && datas[i].dia <= 30)
+  if (data.mes == 4 || data.mes == 6 || data.mes == 9 || data.mes == 11)
+    if (0 < data.dia && data.dia <= 30)
       valido = 1;
-  if (datas[i].dia < 0 || datas[i].dia > 31 || datas[i].mes > 12 || datas[i].mes < 0)
+  if (data.dia < 0 || data.dia > 31 || data.mes > 12 || data.mes < 0)
   {
     valido = 0;
     return valido;
   }
 
   return valido;
-  
 }
 
-int q2(Data datas[], int *qtdDias, int *qtdMeses, int *qtdAnos)
+DiasMesesAnos q2(char dataInicialStr[], char dataFinalStr[])
 {
   int i;
-  q1(datas, 2);
+  Data data;
+  Data dataInicial = getValidDMA(dataInicialStr);
+  Data dataFinal = getValidDMA(dataFinalStr);
 
-  Data dataUnica[1];
-  for (i = 0; i < 2; i++)
+  if (dataInicial.valido == 0)
+    data.dma.retorno = 2;
+  else if (dataFinal.valido == 0)
+    data.dma.retorno = 3;
+
+  data.dma.qtdDias = dataFinal.dia - dataInicial.dia;
+  data.dma.qtdMeses = dataFinal.mes - dataInicial.mes;
+  data.dma.qtdAnos = dataFinal.ano - dataInicial.ano;
+
+  if (data.dma.qtdMeses < 0)
   {
-    strcpy(dataUnica[0].dataStr, datas[i].dataStr);
-
-    if (i == 0 && q1(dataUnica, 1) == 0)
-      return 2;
-    else if (i == 1 && q1(dataUnica, 1) == 0)
-      return 3;
+    data.dma.qtdAnos--;
+    data.dma.qtdMeses += 12;
   }
 
-  *qtdDias = datas[1].dia - datas[0].dia;
-  *qtdMeses = datas[1].mes - datas[0].mes;
-  *qtdAnos = datas[1].ano - datas[0].ano;
-
-  if (*qtdMeses < 0)
+  if (data.dma.qtdDias < 0)
   {
-    *qtdAnos--;
-    *qtdMeses += 12;
+    data.dma.qtdMeses--;
+    data.dma.qtdDias = qtdDiasMes(dataInicial.mes, dataFinal.bissexto) - dataInicial.dia + dataFinal.dia;
   }
 
-  if (*qtdDias < 0)
-  {
-    *qtdMeses--;
-    *qtdDias = qtdDiasMes(datas[0].mes, datas[1].bissexto) - datas[0].dia + datas[1].dia;
-  }
-
-  if (*qtdDias < 0 || *qtdMeses < 0 || *qtdAnos < 0)
-    return 4;
-  return 1;
+  if (data.dma.qtdDias < 0 || data.dma.qtdMeses < 0 || data.dma.qtdAnos < 0)
+    data.dma.retorno = 4;
+  data.dma.retorno = 1;
+  return data.dma;
 }
 
 // Textos - q3 e q4
@@ -304,7 +301,7 @@ int acharUnidade(int valor)
   return unidade;
 }
 
-int q6(int valor, int numeroBusca)
+int q6(long long int valor, int numeroBusca)
 {
   int unidadesValor = 1, unidadesNumeroBusca = 1;
   int ocorrencias = 0;
