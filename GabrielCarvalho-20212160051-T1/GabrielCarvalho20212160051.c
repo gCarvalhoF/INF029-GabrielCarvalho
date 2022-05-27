@@ -301,7 +301,7 @@ int acharUnidade(int valor)
   return unidade;
 }
 
-int q6(long long int valor, int numeroBusca)
+int q6(int valor, int numeroBusca)
 {
   int unidadesValor = 1, unidadesNumeroBusca = 1;
   int ocorrencias = 0;
