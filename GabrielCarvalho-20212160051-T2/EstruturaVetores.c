@@ -112,7 +112,31 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
-    int retorno = SUCESSO;
+    int retorno = 0;
+    noSecundario estruturaSec[] = vetorPrincipal[posicao - 1];
+
+    if (posicao < 1 || posicao > estruturaSec[0].tamanho)
+        retorno = POSICAO_INVALIDA;
+    else
+    {
+        // testar se existe a estrutura auxiliar
+        if (estruturaSec != NULL)
+        {
+            if (estruturaSec->livre < estruturaSec->tamanho)
+            {
+
+                retorno = SUCESSO;
+            }
+            else
+            {
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
+            }
+        }
+        else
+        {
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        }
+    }
     return retorno;
 }
 
