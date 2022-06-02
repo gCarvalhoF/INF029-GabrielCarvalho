@@ -20,8 +20,9 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
 
     int retorno = 0;
+    noSecundario *current = (noSecundario *) malloc(sizeof(noSecundario));
 
-    if (posicao < 1 || posicao > 9)
+    if (posicao < 1 || posicao > 10)
     {
         // se posição é um valor válido {entre 1 e 10}
         retorno = POSICAO_INVALIDA;
@@ -34,7 +35,7 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     }
     else
     {
-        vetorPrincipal[posicao - 1] = (noSecundario *)malloc(sizeof(noSecundario) * tamanho);
+        vetorPrincipal[posicao - 1] = (noSecundario *) malloc(sizeof(noSecundario));
 
         if (vetorPrincipal[posicao - 1] == NULL)
         {
@@ -49,8 +50,16 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
         else
         {
             // deu tudo certo, crie
-            vetorPrincipal[posicao - 1][0].tamanho = tamanho;
-            vetorPrincipal[posicao - 1][0].livre = tamanho;
+            current = vetorPrincipal[posicao-1];
+            for(int i = 0; i<tamanho; i++)
+              {
+                current->next = (noSecundario *) malloc(sizeof(noSecundario));
+                current->tamanho = tamanho;
+                current->livre = tamanho;
+                current = current->next;
+              }
+              
+            
             retorno = SUCESSO;
         }
     }
@@ -70,32 +79,37 @@ CONSTANTES
 int inserirNumeroEstrutura(int posicao, int valor)
 {
     int retorno = 0;
-    noSecundario estruturaSec[] = vetorPrincipal[posicao - 1];
+    noSecundario *current = (noSecundario *) malloc(sizeof(noSecundario));
+    current = vetorPrincipal[posicao-1];
 
-    if (posicao < 1 || posicao > estruturaSec[0].tamanho)
-        retorno = POSICAO_INVALIDA;
-    else
+
+    if (posicao < 1 || posicao > current->tamanho)
+    retorno = POSICAO_INVALIDA;
+    // testar se existe a estrutura auxiliar
+    if (*current != NULL)
     {
-        // testar se existe a estrutura auxiliar
-        if (estruturaSec != NULL)
+        if (current->livre > 0)
         {
-            if (estruturaSec->livre > 0)
-            {
-                estruturaSec[estruturaSec->tamanho - estruturaSec->livre].valor = valor;
-                estruturaSec[estruturaSec->tamanho - estruturaSec->livre].posicao++;
-                estruturaSec->livre--;
-                retorno = SUCESSO;
-            }
-            else
-            {
-                retorno = SEM_ESPACO;
-            }
+             
+            while(current->next != NULL)
+              current = current->next;
+          
+            current->valor = valor;
+            current->livre--;
+            retorno = SUCESSO;
         }
         else
         {
-            retorno = SEM_ESTRUTURA_AUXILIAR;
+            retorno = SEM_ESPACO;
         }
     }
+    else
+    {
+        retorno = SEM_ESTRUTURA_AUXILIAR;
+    }
+  
+  
+
 
     return retorno;
 }
