@@ -5,7 +5,7 @@
 
 int menu();
 
-void dobrar(int *x);
+// void dobrar(int *x);
 
 int menu()
 {
@@ -27,6 +27,7 @@ int main()
     int op;
     int sair = 0;
     int ret;
+    int valor;
     while (!sair)
     {
         op = menu();
@@ -39,9 +40,12 @@ int main()
             break;
         }
         case 1:
-        { //inserir
-            //TODO
-            ret = inserirNumeroEmEstrutura(5, 25);
+        { // inserir
+            // TODO
+            printf("Qual valor deseja inserir? ");
+            scanf("%d", &valor);
+
+            ret = inserirNumeroEmEstrutura(5, valor);
             if (ret == SUCESSO)
             {
                 printf("Inserido com sucesso");
@@ -58,13 +62,14 @@ int main()
         }
 
         case 2:
-        { //excluir
-            //TODO
+        { // excluir
+            // TODO
             break;
         }
 
         case 3:
-        { //recuperar dados estrutura auxiliar
+        { // recuperar dados estrutura auxiliar
+
             int posicao, retorno;
             printf("Qual a estrutura a ser listada (1..10)?");
             scanf("%d", &posicao);
@@ -83,7 +88,7 @@ int main()
 
                 if (retorno == SUCESSO)
                 {
-                    //imprimir para os dados para o usuário
+                    // imprimir para os dados para o usuário
                     int i = 0;
                     for (; i < qtd; i++)
                     {
@@ -94,20 +99,20 @@ int main()
             break;
         }
 
-        case 10:
-        { //dobrar
-            //ler um numero
-            int valor;
-            scanf("%i", &valor);
+            // case 10:
+            // { //dobrar
+            //     //ler um numero
+            //     int valor;
+            //     scanf("%i", &valor);
 
-            dobrar(&valor);
+            //     dobrar(&valor);
 
-            //passar para um funcao (void dobrar(...)) que recebe o numero e dobra (EstruturaVetores.c)
+            //     //passar para um funcao (void dobrar(...)) que recebe o numero e dobra (EstruturaVetores.c)
 
-            printf("%i", valor);
+            //     printf("%i", valor);
 
-            break;
-        }
+            //     break;
+            // }
 
         default:
         {

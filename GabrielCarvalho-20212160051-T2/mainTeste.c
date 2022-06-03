@@ -5,9 +5,9 @@
 
 void show_log(char *str);
 
-void testeInserirSemNada();
-void testeCriarEstrutura();
-void testeInserirComEstrutura();
+void testeInserirSemNada();      // Sucesso total
+void testeCriarEstrutura();      // Sucesso total
+void testeInserirComEstrutura(); // Sucesso total
 void testeExcluir();
 void testeExcluirNumeroEspecifico();
 void testeListar();
@@ -18,18 +18,18 @@ void testeListaEncadeada();
 int main()
 {
     inicializar();
-    testeInserirSemNada();
-    /*testeCriarEstrutura();
+    // testeInserirSemNada();
+    testeCriarEstrutura(); // Sucesso total
     testeInserirComEstrutura();
     testeExcluir();
-    testeExcluirNumeroEspecifico();
-    testeListar();
-    testeRetornarTodosNumeros();
-    testeMudarTamanhoEstrutura();
-    testeListaEncadeada();*/
+    // testeExcluirNumeroEspecifico();
+    // testeListar();
+    // testeRetornarTodosNumeros();
+    // testeMudarTamanhoEstrutura();
+    // testeListaEncadeada();
     finalizar();
 }
-int ligado = 0;
+int ligado = 1;
 void show_log(char *str)
 {
     if (ligado)

@@ -18,53 +18,42 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-
-    int retorno = 0;
-    noSecundario *current = (noSecundario *) malloc(sizeof(noSecundario));
-
     if (posicao < 1 || posicao > 10)
     {
         // se posição é um valor válido {entre 1 e 10}
-        retorno = POSICAO_INVALIDA;
+        return POSICAO_INVALIDA;
+    }
+
+    if (tamanho < 1)
+    {
+        // o tamanho nao pode ser menor que 1
+        return TAMANHO_INVALIDO;
     }
 
     if (vetorPrincipal[posicao - 1] != NULL)
     {
         // a posicao pode já existir estrutura auxiliar
-        retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+        return JA_TEM_ESTRUTURA_AUXILIAR;
     }
     else
     {
-        vetorPrincipal[posicao - 1] = (noSecundario *) malloc(sizeof(noSecundario));
+        vetorPrincipal[posicao - 1] = (noSecundario *)malloc(sizeof(noSecundario));
 
         if (vetorPrincipal[posicao - 1] == NULL)
         {
+
             // o tamanho ser muito grande
-            retorno = SEM_ESPACO_DE_MEMORIA;
-        }
-        else if (tamanho < 1)
-        {
-            // o tamanho nao pode ser menor que 1
-            retorno = TAMANHO_INVALIDO;
+            return SEM_ESPACO_DE_MEMORIA;
         }
         else
         {
             // deu tudo certo, crie
-            current = vetorPrincipal[posicao-1];
-            for(int i = 0; i<tamanho; i++)
-              {
-                current->next = (noSecundario *) malloc(sizeof(noSecundario));
-                current->tamanho = tamanho;
-                current->livre = tamanho;
-                current = current->next;
-              }
-              
-            
-            retorno = SUCESSO;
+            vetorPrincipal[posicao - 1]->tamanho = tamanho;
+            vetorPrincipal[posicao - 1]->livre = tamanho;
+            vetorPrincipal[posicao - 1]->next = NULL;
+            return SUCESSO;
         }
     }
-
-    return retorno;
 }
 
 /*
@@ -76,42 +65,53 @@ Rertono (int)
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 CONSTANTES
 */
-int inserirNumeroEstrutura(int posicao, int valor)
+int inserirNumeroEmEstrutura(int posicao, int valor)
 {
     int retorno = 0;
-    noSecundario *current = (noSecundario *) malloc(sizeof(noSecundario));
-    current = vetorPrincipal[posicao-1];
+    noSecundario *current = vetorPrincipal[posicao - 1];
+    noSecundario *novo = (noSecundario *)malloc(sizeof(noSecundario));
 
-
-    if (posicao < 1 || posicao > current->tamanho)
-    retorno = POSICAO_INVALIDA;
-    // testar se existe a estrutura auxiliar
-    if (*current != NULL)
+    if (posicao < 1 || posicao > 10)
     {
-        if (current->livre > 0)
-        {
-             
-            while(current->next != NULL)
-              current = current->next;
-          
-            current->valor = valor;
-            current->livre--;
-            retorno = SUCESSO;
-        }
-        else
-        {
-            retorno = SEM_ESPACO;
-        }
+        return POSICAO_INVALIDA;
+    }
+
+    // testar se existe a estrutura auxiliar
+    if (current == NULL)
+    {
+        return SEM_ESTRUTURA_AUXILIAR;
     }
     else
     {
-        retorno = SEM_ESTRUTURA_AUXILIAR;
+        if (current->livre > 0)
+        {
+
+            novo->tamanho = current->tamanho;
+            novo->valor = valor;
+            novo->livre = current->livre;
+            novo->next = NULL;
+
+            if (current->livre == current->tamanho)
+            {
+                *current = *novo;
+                current->livre--;
+            }
+            else
+            {
+                current->livre--;
+                while (current->next != NULL)
+                    current = current->next;
+
+                current->next = novo;
+            }
+
+            return SUCESSO;
+        }
+        else
+        {
+            return SEM_ESPACO;
+        }
     }
-  
-  
-
-
-    return retorno;
 }
 
 /*
@@ -127,28 +127,41 @@ Rertono (int)
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
     int retorno = 0;
-    noSecundario estruturaSec[] = vetorPrincipal[posicao - 1];
+    noSecundario *current = vetorPrincipal[posicao - 1];
 
-    if (posicao < 1 || posicao > estruturaSec[0].tamanho)
+    if (posicao < 1 || posicao > current->tamanho)
         retorno = POSICAO_INVALIDA;
     else
     {
         // testar se existe a estrutura auxiliar
-        if (estruturaSec != NULL)
+        if (current == NULL)
         {
-            if (estruturaSec->livre < estruturaSec->tamanho)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        }
+        else
+        {
+            while (current != NULL)
             {
+                printf("Valor -> %d - ", current->valor);
+                current = current->next;
+            }
 
+            if (current->livre < current->tamanho)
+            {
+                while (current->next != NULL)
+                {
+                    current->livre++;
+                    current = current->next;
+                }
+                printf("tamanho -> %d\n", current->tamanho);
+
+                free(current);
                 retorno = SUCESSO;
             }
             else
             {
                 retorno = ESTRUTURA_AUXILIAR_VAZIA;
             }
-        }
-        else
-        {
-            retorno = SEM_ESTRUTURA_AUXILIAR;
         }
     }
     return retorno;
@@ -316,6 +329,8 @@ void inicializar()
 {
     for (int i = 0; i < TAM; i++)
         vetorPrincipal[i] = NULL;
+
+    criarEstruturaAuxiliar(5, 3);
 }
 
 /*

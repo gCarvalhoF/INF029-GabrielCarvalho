@@ -23,7 +23,6 @@ enum
 typedef struct noSecundario
 {
     int valor;
-    int posicao;
     int tamanho;
     int livre;
     struct noSecundario *next;
