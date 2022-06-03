@@ -31,7 +31,8 @@ typedef struct noSecundario
 
 typedef struct reg
 {
-    int conteudo;
+    int tamanho;
+    noSecundario conteudo;
     struct reg *prox;
 } No;
 

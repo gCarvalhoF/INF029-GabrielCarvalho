@@ -6,6 +6,13 @@
 
 noSecundario *vetorPrincipal[TAM];
 
+void troca(int *xp, int *yp)
+{
+    int temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+}
+
 // se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao)
 {
@@ -358,24 +365,25 @@ int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
         }
         else
         {
-            for (int j = 1, k = 0; j < inseridosVet; j++)
+            for (int k = 0; k < (first->tamanho - first->livre); k++)
             {
-                valor = current->valor;
-                valor = vetorAux[j];
-                k = j - 1;
-                while (k >= 0 && vetorAux[k] > valor)
-                {
-                    vetorAux[k + 1] = vetorAux[k];
-                    k = k - 1;
-                }
-                vetorAux[k + 1] = valor;
+                vetorAux[inseridosVet] = current->valor;
+                current = current->next;
+                inseridosVet++;
             }
         }
+    }
+    for (int i = 0; i < inseridosVet - 1; i++)
+        for (int j = 0; j < inseridosVet - i - 1; j++)
+            if (vetorAux[j] > vetorAux[j + 1])
+                troca(&vetorAux[j], &vetorAux[j + 1]);
 
-        if (inseridosVet == 0)
-            return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
-        else
-            return SUCESSO;
+    if (inseridosVet == 0)
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else
+    {
+
+        return SUCESSO;
     }
 }
 
@@ -391,9 +399,31 @@ Rertono (int)
 */
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
 {
+    noSecundario *current = vetorPrincipal[posicao - 1];
 
-    int retorno = 0;
-    return retorno;
+    if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
+    {
+        return POSICAO_INVALIDA;
+    }
+
+    // testar se existe a estrutura auxiliar
+    if (current == NULL)
+    {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+    else
+    {
+        if (novoTamanho + current->tamanho < 1)
+            return NOVO_TAMANHO_INVALIDO;
+
+        if (!malloc(sizeof(noSecundario)))
+            return SEM_ESPACO_DE_MEMORIA;
+
+        current->tamanho += novoTamanho;
+        if (novoTamanho > 0)
+            current->livre += novoTamanho;
+        return SUCESSO;
+    }
 }
 
 /*
@@ -406,10 +436,38 @@ Retorno (int)
 */
 int getQuantidadeElementosEstruturaAuxiliar(int posicao)
 {
+    noSecundario *first = vetorPrincipal[posicao - 1];
+    noSecundario *current = vetorPrincipal[posicao - 1];
+    int qtd = 0;
 
-    int retorno = 0;
+    if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
+    {
+        return POSICAO_INVALIDA;
+    }
 
-    return retorno;
+    if (current == NULL)
+    {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+    else
+    {
+
+        if (current->livre < current->tamanho)
+        {
+            for (int i = 0; i < (first->tamanho - first->livre); i++)
+            {
+                qtd++;
+                current = current->next;
+            }
+
+            return qtd;
+        }
+        else
+        {
+            // printf("Estrutura vazia\n");
+            return ESTRUTURA_AUXILIAR_VAZIA;
+        }
+    }
 }
 
 /*
@@ -420,8 +478,38 @@ Retorno (No*)
 */
 No *montarListaEncadeadaComCabecote()
 {
+    noSecundario *current;
+    noSecundario *first;
 
-    return NULL;
+    No *inicioListaCabecote = (No *)malloc(sizeof(No));
+    inicioListaCabecote->prox = (No *)malloc(sizeof(No));
+
+    noSecundario *current;
+    noSecundario *first;
+    int j = 0;
+
+    for (int i = 0; i < 10; i++)
+    {
+        first = vetorPrincipal[i];
+        current = vetorPrincipal[i];
+
+        if (current == NULL || current->livre == current->tamanho)
+        {
+            continue;
+        }
+        else
+            for (int k = 0; k < (first->tamanho - first->livre); k++)
+            {
+                vetorAux[j] = current->valor;
+                current = current->next;
+                j++;
+            }
+    }
+
+    if (j == 0)
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else
+        return SUCESSO;
 }
 
 /*
@@ -430,6 +518,14 @@ Retorno void
 */
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
+    No *current = inicio;
+    No *first = inicio;
+
+    for (int i = 0; i < first->tamanho; i++)
+    {
+        vetorAux[i] = current->conteudo.valor;
+        current = current->prox;
+    }
 }
 
 /*
@@ -440,6 +536,15 @@ Retorno
 */
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
+    No *current = *inicio;
+    No *temp;
+    while (current->prox != NULL)
+    {
+        temp = current->prox;
+        free(current);
+        current = temp;
+    }
+    *inicio = NULL;
 }
 
 /*
@@ -460,5 +565,15 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 void finalizar()
 {
     for (int i = 0; i < TAM; i++)
-        free(vetorPrincipal[i]);
+    {
+        noSecundario *current = vetorPrincipal[i];
+        noSecundario *temp;
+        while (current->next != NULL)
+        {
+            temp = current->next;
+            free(current);
+            current = temp;
+        }
+        vetorPrincipal[i] = NULL;
+    }
 }
