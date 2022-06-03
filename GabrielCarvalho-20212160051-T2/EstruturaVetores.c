@@ -6,6 +6,17 @@
 
 noSecundario *vetorPrincipal[TAM];
 
+// se posição é um valor válido {entre 1 e 10}
+int ehPosicaoValida(int posicao)
+{
+    if (posicao < 1 || posicao > 10)
+    {
+        return POSICAO_INVALIDA;
+    }
+    else
+        return SUCESSO;
+}
+
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
 com tamanho 'tamanho'
@@ -18,7 +29,7 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-    if (posicao < 1 || posicao > 10)
+    if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
     {
         // se posição é um valor válido {entre 1 e 10}
         return POSICAO_INVALIDA;
@@ -70,7 +81,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     noSecundario *current = vetorPrincipal[posicao - 1];
     noSecundario *novo = (noSecundario *)malloc(sizeof(noSecundario));
 
-    if (posicao < 1 || posicao > 10)
+    if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
     {
         return POSICAO_INVALIDA;
     }
@@ -218,19 +229,6 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
     }
 }
 
-// se posição é um valor válido {entre 1 e 10}
-int ehPosicaoValida(int posicao)
-{
-    int retorno = 0;
-    if (posicao < 1 || posicao > 10)
-    {
-        retorno = POSICAO_INVALIDA;
-    }
-    else
-        retorno = SUCESSO;
-
-    return retorno;
-}
 /*
 Objetivo: retorna os números da estrutura auxiliar da posição 'posicao (1..10)'.
 os números devem ser armazenados em vetorAux
@@ -241,10 +239,23 @@ Retorno (int)
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
+    noSecundario *first = vetorPrincipal[posicao - 1];
+    noSecundario *current = vetorPrincipal[posicao - 1];
 
-    int retorno = 0;
+    if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
+        return POSICAO_INVALIDA;
 
-    return retorno;
+    if (current == NULL)
+        return SEM_ESTRUTURA_AUXILIAR;
+    else
+    {
+        for (int i = 0; i < (first->tamanho - first->livre); i++)
+        {
+            vetorAux[i] = current->valor;
+            current = current->next;
+        }
+        return SUCESSO;
+    }
 }
 
 /*
@@ -258,9 +269,30 @@ Rertono (int)
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
 
-    int retorno = 0;
+    noSecundario *first = vetorPrincipal[posicao - 1];
+    noSecundario *current = vetorPrincipal[posicao - 1];
 
-    return retorno;
+    if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
+        return POSICAO_INVALIDA;
+
+    if (current == NULL)
+        return SEM_ESTRUTURA_AUXILIAR;
+    else
+    {
+        for (int i = 0; i < (first->tamanho - first->livre); i++)
+        {
+            if (current->valor < vetorAux[i - 1])
+            {
+                vetorAux[i] = vetorAux[i - 1];
+                vetorAux[i - 1] = current->valor;
+            }
+            else
+                vetorAux[i] = current->valor;
+
+            current = current->next;
+        }
+        return SUCESSO;
+    }
 }
 
 /*
@@ -272,9 +304,32 @@ Rertono (int)
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
+    noSecundario *current;
+    noSecundario *first;
+    int j = 0;
 
-    int retorno = 0;
-    return retorno;
+    for (int i = 0; i < 10; i++)
+    {
+        first = vetorPrincipal[i];
+        current = vetorPrincipal[i];
+
+        if (current == NULL || current->livre == current->tamanho)
+        {
+            continue;
+        }
+        else
+            for (int k = 0; k < (first->tamanho - first->livre); k++)
+            {
+                vetorAux[j] = current->valor;
+                current = current->next;
+                j++;
+            }
+    }
+
+    if (j == 0)
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else
+        return SUCESSO;
 }
 
 /*
@@ -287,8 +342,41 @@ Rertono (int)
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
 
-    int retorno = 0;
-    return retorno;
+    noSecundario *current;
+    noSecundario *first;
+    int valor;
+    int inseridosVet = 0;
+
+    for (int i = 0; i < 10; i++)
+    {
+        first = vetorPrincipal[i];
+        current = vetorPrincipal[i];
+
+        if (current == NULL || current->livre == current->tamanho)
+        {
+            continue;
+        }
+        else
+        {
+            for (int j = 1, k = 0; j < inseridosVet; j++)
+            {
+                valor = current->valor;
+                valor = vetorAux[j];
+                k = j - 1;
+                while (k >= 0 && vetorAux[k] > valor)
+                {
+                    vetorAux[k + 1] = vetorAux[k];
+                    k = k - 1;
+                }
+                vetorAux[k + 1] = valor;
+            }
+        }
+
+        if (inseridosVet == 0)
+            return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+        else
+            return SUCESSO;
+    }
 }
 
 /*
