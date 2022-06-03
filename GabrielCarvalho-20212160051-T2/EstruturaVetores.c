@@ -67,7 +67,6 @@ CONSTANTES
 */
 int inserirNumeroEmEstrutura(int posicao, int valor)
 {
-    int retorno = 0;
     noSecundario *current = vetorPrincipal[posicao - 1];
     noSecundario *novo = (noSecundario *)malloc(sizeof(noSecundario));
 
@@ -85,7 +84,6 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     {
         if (current->livre > 0)
         {
-
             novo->tamanho = current->tamanho;
             novo->valor = valor;
             novo->livre = current->livre;
@@ -95,17 +93,23 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
             {
                 *current = *novo;
                 current->livre--;
+
+                if (current->valor == valor)
+                    return SUCESSO;
             }
             else
             {
                 current->livre--;
                 while (current->next != NULL)
+                {
                     current = current->next;
+                }
 
                 current->next = novo;
-            }
 
-            return SUCESSO;
+                if (current->next->valor == valor)
+                    return SUCESSO;
+            }
         }
         else
         {
@@ -126,45 +130,39 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
-    int retorno = 0;
     noSecundario *current = vetorPrincipal[posicao - 1];
+    noSecundario *previous = vetorPrincipal[posicao - 1];
 
-    if (posicao < 1 || posicao > current->tamanho)
-        retorno = POSICAO_INVALIDA;
+    if (posicao < 1 || posicao > 10)
+    {
+        return POSICAO_INVALIDA;
+    }
+
+    if (current == NULL)
+    {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
     else
     {
-        // testar se existe a estrutura auxiliar
-        if (current == NULL)
+        // printf("To entrando aqui\n");
+        if (current->livre < current->tamanho)
         {
-            retorno = SEM_ESTRUTURA_AUXILIAR;
-        }
-        else
-        {
-            while (current != NULL)
+            while (current->next != NULL)
             {
-                printf("Valor -> %d - ", current->valor);
+
+                previous = current;
                 current = current->next;
             }
 
-            if (current->livre < current->tamanho)
-            {
-                while (current->next != NULL)
-                {
-                    current->livre++;
-                    current = current->next;
-                }
-                printf("tamanho -> %d\n", current->tamanho);
-
-                free(current);
-                retorno = SUCESSO;
-            }
-            else
-            {
-                retorno = ESTRUTURA_AUXILIAR_VAZIA;
-            }
+            vetorPrincipal[posicao - 1]->livre++;
+            return SUCESSO;
+        }
+        else
+        {
+            // printf("Estrutura vazia\n");
+            return ESTRUTURA_AUXILIAR_VAZIA;
         }
     }
-    return retorno;
 }
 
 /*
@@ -181,8 +179,43 @@ Rertono (int)
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 {
-    int retorno = SUCESSO;
-    return retorno;
+    noSecundario *current = vetorPrincipal[posicao - 1];
+    noSecundario *previous = vetorPrincipal[posicao - 1];
+
+    if (posicao < 1 || posicao > 10)
+    {
+        return POSICAO_INVALIDA;
+    }
+
+    if (current == NULL)
+    {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+    else
+    {
+        // printf("To entrando aqui\n");
+        if (current->livre < current->tamanho)
+        {
+
+            while (current->next != NULL)
+            {
+                if (current->valor == valor)
+                {
+                    vetorPrincipal[posicao - 1]->livre++;
+                    current->valor = current->next->valor;
+                    return SUCESSO;
+                }
+                previous = current;
+                current = current->next;
+            }
+            return NUMERO_INEXISTENTE;
+        }
+        else
+        {
+            // printf("Estrutura vazia\n");
+            return ESTRUTURA_AUXILIAR_VAZIA;
+        }
+    }
 }
 
 // se posição é um valor válido {entre 1 e 10}
@@ -329,8 +362,6 @@ void inicializar()
 {
     for (int i = 0; i < TAM; i++)
         vetorPrincipal[i] = NULL;
-
-    criarEstruturaAuxiliar(5, 3);
 }
 
 /*
