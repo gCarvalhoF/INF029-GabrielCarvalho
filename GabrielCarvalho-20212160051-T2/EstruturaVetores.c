@@ -84,10 +84,9 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
 {
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
         return POSICAO_INVALIDA;
-  
+
     noSecundario *current = vetorPrincipal[posicao - 1];
     noSecundario *novo = (noSecundario *)malloc(sizeof(noSecundario));
-
 
     // testar se existe a estrutura auxiliar
     if (current == NULL)
@@ -123,7 +122,6 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
 
                 if (current->next->valor == valor)
                     return SUCESSO;
-                
             }
         }
         else
@@ -147,10 +145,9 @@ int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
         return POSICAO_INVALIDA;
-  
+
     noSecundario *current = vetorPrincipal[posicao - 1];
     noSecundario *previous = vetorPrincipal[posicao - 1];
-
 
     if (current == NULL)
     {
@@ -195,10 +192,9 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 {
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
         return POSICAO_INVALIDA;
-  
+
     noSecundario *current = vetorPrincipal[posicao - 1];
     noSecundario *previous = vetorPrincipal[posicao - 1];
-
 
     if (current == NULL)
     {
@@ -243,10 +239,9 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
         return POSICAO_INVALIDA;
-  
+
     noSecundario *first = vetorPrincipal[posicao - 1];
     noSecundario *current = vetorPrincipal[posicao - 1];
-
 
     if (current == NULL)
         return SEM_ESTRUTURA_AUXILIAR;
@@ -272,13 +267,12 @@ Rertono (int)
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
     int inseridosVet = 0;
-  
+
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
         return POSICAO_INVALIDA;
 
     noSecundario *first = vetorPrincipal[posicao - 1];
     noSecundario *current = vetorPrincipal[posicao - 1];
-
 
     if (current == NULL)
         return SEM_ESTRUTURA_AUXILIAR;
@@ -291,11 +285,11 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
             inseridosVet++;
         }
 
-      for (int i = 0; i < inseridosVet - 1; i++)
-        for (int j = 0; j < inseridosVet - i - 1; j++)
-            if (vetorAux[j] > vetorAux[j + 1])
-                troca(&vetorAux[j], &vetorAux[j + 1]);
-      
+        for (int i = 0; i < inseridosVet - 1; i++)
+            for (int j = 0; j < inseridosVet - i - 1; j++)
+                if (vetorAux[j] > vetorAux[j + 1])
+                    troca(&vetorAux[j], &vetorAux[j + 1]);
+
         return SUCESSO;
     }
 }
@@ -561,7 +555,13 @@ void finalizar()
     {
         noSecundario *current = vetorPrincipal[i];
         noSecundario *temp;
-      
+
+        if (current == NULL)
+        {
+            free(current);
+            continue;
+        }
+
         while (current->next != NULL)
         {
             temp = current->next;
