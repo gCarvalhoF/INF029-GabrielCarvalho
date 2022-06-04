@@ -569,6 +569,5 @@ void finalizar()
             current = temp;
         }
         free(current);
-        free(vetorPrincipal[i]);
     }
 }
