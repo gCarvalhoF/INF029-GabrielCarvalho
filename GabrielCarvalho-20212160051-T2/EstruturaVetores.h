@@ -29,11 +29,10 @@ typedef struct noSecundario
 
 } noSecundario;
 
-typedef struct reg
+typedef struct No
 {
-    int tamanho;
-    noSecundario conteudo;
-    struct reg *prox;
+    int conteudo;
+    struct No *prox;
 } No;
 
 int criarEstruturaAuxiliar(int posicao, int tamanho);

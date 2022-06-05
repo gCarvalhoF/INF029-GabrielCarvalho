@@ -85,6 +85,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
         return POSICAO_INVALIDA;
 
+    noSecundario *first = vetorPrincipal[posicao - 1];
     noSecundario *current = vetorPrincipal[posicao - 1];
     noSecundario *novo = (noSecundario *)malloc(sizeof(noSecundario));
 
@@ -102,7 +103,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
             novo->livre = current->livre;
             novo->next = NULL;
 
-            if (current->livre == current->tamanho)
+            if (first->livre == first->tamanho)
             {
                 *current = *novo;
                 current->livre--;
@@ -112,7 +113,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
             }
             else
             {
-                current->livre--;
+                first->livre--;
                 while (current->next != NULL)
                 {
                     current = current->next;
@@ -391,6 +392,8 @@ Rertono (int)
 */
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
 {
+    noSecundario *first = vetorPrincipal[posicao - 1];
+    noSecundario *temp;
     noSecundario *current = vetorPrincipal[posicao - 1];
 
     if (ehPosicaoValida(posicao) == POSICAO_INVALIDA)
@@ -411,6 +414,16 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
         current->tamanho += novoTamanho;
         if (novoTamanho > 0)
             current->livre += novoTamanho;
+
+        if (novoTamanho < 0)
+
+        {
+            for (int i = 1; i < (first->tamanho - first->livre); i++)
+            {
+                current = current->next;
+            }
+            current->next = NULL;
+        }
         return SUCESSO;
     }
 }
@@ -459,6 +472,18 @@ int getQuantidadeElementosEstruturaAuxiliar(int posicao)
     }
 }
 
+void inserirLista(No **inicioLista, int valor)
+{
+    No *novoNo = (No *)malloc(sizeof(No));
+    No *current = *inicioLista;
+
+    novoNo->conteudo = valor;
+    novoNo->prox = NULL;
+    while (current->prox != NULL)
+        current = current->prox;
+    current->prox = novoNo;
+}
+
 /*
 Objetivo: montar a lista encadeada com cabeçote com todos os números presentes em todas as estruturas.
 Retorno (No*)
@@ -469,31 +494,35 @@ No *montarListaEncadeadaComCabecote()
 {
 
     No *inicioListaCabecote = (No *)malloc(sizeof(No));
-    inicioListaCabecote->prox = (No *)malloc(sizeof(No));
+    No *currentNo = inicioListaCabecote;
+    inicioListaCabecote->prox = NULL;
 
     noSecundario *current;
     noSecundario *first;
-    int j = 0;
 
+    int qtd_valores = 0;
     for (int i = 0; i < 10; i++)
     {
         first = vetorPrincipal[i];
-        current = vetorPrincipal[i];
-
-        if (current == NULL || current->livre == current->tamanho)
-        {
+        if (first == NULL)
             continue;
-        }
-        else
-            for (int k = 0; k < (first->tamanho - first->livre); k++)
-            {
-                // vetorAux[j] = current->valor;
-                current = current->next;
-                j++;
-            }
+        qtd_valores += first->tamanho - first->livre;
     }
 
-    if (j == 0)
+    int vet[qtd_valores];
+    int isEmpty;
+
+    for (int i = 0; i < 10; i++)
+    {
+        isEmpty = getDadosDeTodasEstruturasAuxiliares(vet);
+    }
+
+    for (int i = 0; i < qtd_valores; i++)
+    {
+        inserirLista(&inicioListaCabecote, vet[i]);
+    }
+
+    if (isEmpty == TODAS_ESTRUTURAS_AUXILIARES_VAZIAS)
         return NULL;
     else
         return inicioListaCabecote;
@@ -505,14 +534,15 @@ Retorno void
 */
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
-    No *current = inicio;
-    No *first = inicio;
+    No *current = inicio->prox;
+    int i = 0;
 
-    for (int i = 0; i < first->tamanho; i++)
+    while (current->prox != NULL)
     {
-        // current= current->conteudo.valor;
+        vetorAux[i++] = current->conteudo;
         current = current->prox;
     }
+    vetorAux[i++] = current->conteudo;
 }
 
 /*
@@ -523,14 +553,18 @@ Retorno
 */
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
-    No *current = *inicio;
+    No *current;
     No *temp;
+
+    current = *inicio;
+
     while (current->prox != NULL)
     {
         temp = current->prox;
         free(current);
         current = temp;
     }
+    free(current);
     *inicio = NULL;
 }
 
