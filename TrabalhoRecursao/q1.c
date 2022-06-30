@@ -1,13 +1,15 @@
 #include <stdio.h>
 
-float fat(int valor){
-  if (valor == 0)
+float multiply(int valor1, int valor2, int cont)
+{
+  if (cont == 0)
     return 1;
   else
     return valor * fat(valor - 1);
 }
 
-int main(){
+int main()
+{
   int number;
   float fatNumber;
 
@@ -18,7 +20,5 @@ int main(){
 
   printf("%d! = %f", number, fatNumber);
 
-
-  
   return 0;
 }
