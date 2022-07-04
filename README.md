@@ -14,27 +14,27 @@
 
 ### **Foram eles**:
 
-  ## Trabalho 1
-    
-    ### Conceitos trabalhados:
-
-      - Struct
-      - Funções
-      - Tipos de dados
-      - Retorno e tratamento de arrays em funções
+## [Trabalho 1](GabrielCarvalho-20212160051-T1/)
   
-  ## Trabalho 2
+### **Conceitos trabalhados**:
 
-    ### Conceitos trabalhados:
+  - Struct
+  - Funções
+  - Tipos de dados
+  - Retorno e tratamento de arrays em funções
 
-      - Alocação dinâmica
-      - Ponteiros
-      - Listas encadeadas
-        - Criação
-        - Inicialização
-        - Inserção
-        - Exclusão no meio
-        - Exclusão no final
+## [Trabalho 2](GabrielCarvalho-20212160051-T2/)
+
+### **Conceitos trabalhados**:
+
+  - Alocação dinâmica
+  - Ponteiros
+  - Listas encadeadas
+    - Criação
+    - Inicialização
+    - Inserção
+    - Exclusão no meio
+    - Exclusão no final
 
 
 ## 🤝 Desenvolvedor
